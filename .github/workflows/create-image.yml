@@ -43,8 +43,7 @@ jobs:
 
       - name: update infra yaml file
         run: |
-          pwd
-          ls -la
+          cs infra
           yq e -i yq e -i '.spec.template.spec.containers[0].image="pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:${{ steps.get-version.outputs.VERSION }}"' calc-deployment.yml
 
       - name: push change
