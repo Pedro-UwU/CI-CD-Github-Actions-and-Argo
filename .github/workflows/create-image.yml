@@ -43,18 +43,19 @@ jobs:
 
       - name: update infra yaml file
         run: |
-          cs infra
+          cd infra
           yq e -i yq e -i '.spec.template.spec.containers[0].image="pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:${{ steps.get-version.outputs.VERSION }}"' calc-deployment.yml
+          cat calc-deployment.yml
 
-      - name: push change
-        uses: dmnemec/copy_file_to_another_repo_action@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source_file: infra/calc-deployment.yml
-          destination_repo: PedroLopezITBA/CI-CD-Github-Actions-and-Argo
-          destination_branch: master
-          destination_folder: infra
-          user_email: pelopez@itba.edu.ar
-          user_name: PedroLopezITBA
-          commit_message: update image version ${{ steps.get_version.outputs.VERSION }} in yml file
+      # - name: push change
+      #   uses: dmnemec/copy_file_to_another_repo_action@main
+      #   env:
+      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      #   with:
+      #     source_file: infra/calc-deployment.yml
+      #     destination_repo: PedroLopezITBA/CI-CD-Github-Actions-and-Argo
+      #     destination_branch: master
+      #     destination_folder: infra
+      #     user_email: pelopez@itba.edu.ar
+      #     user_name: PedroLopezITBA
+      #     commit_message: update image version ${{ steps.get_version.outputs.VERSION }} in yml file
