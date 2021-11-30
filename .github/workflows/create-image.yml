@@ -20,29 +20,31 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: create image
-        run: |
-          pwd
-          ls -la
-          cd app
-          docker build -t test-app:${{ steps.get-version.outputs.VERSION }} .
-          echo 'Created Image with name:tag = test-app:${{ steps.get-version.outputs.VERSION }}'
+      # - name: create image
+      #   run: |
+      #     pwd
+      #     ls -la
+      #     cd app
+      #     docker build -t test-app:${{ steps.get-version.outputs.VERSION }} .
+      #     echo 'Created Image with name:tag = test-app:${{ steps.get-version.outputs.VERSION }}'
 
-      - name: get-images-id
-        id: image-id
-        run: |
-          echo ::set-output name=IMAGE_ID::$(docker images -q test-app:${{ steps.get-version.outputs.VERSION }})
+      # - name: get-images-id
+      #   id: image-id
+      #   run: |
+      #     echo ::set-output name=IMAGE_ID::$(docker images -q test-app:${{ steps.get-version.outputs.VERSION }})
 
-      - name: upload image to registry
-        run: |
-          docker tag ${{ steps.image-id.outputs.IMAGE_ID }} pedrolopez030200.jfrog.io/pedro-repo-docker/test-app:${{ steps.get-version.outputs.VERSION }}
-          docker push pedrolopez030200.jfrog.io/pedro-repo-docker/test-app:${{ steps.get-version.outputs.VERSION }}  
+      # - name: upload image to registry
+      #   run: |
+      #     docker tag ${{ steps.image-id.outputs.IMAGE_ID }} pedrolopez030200.jfrog.io/pedro-repo-docker/test-app:${{ steps.get-version.outputs.VERSION }}
+      #     docker push pedrolopez030200.jfrog.io/pedro-repo-docker/test-app:${{ steps.get-version.outputs.VERSION }}  
 
       - name: install yq
         uses: mikefarah/yq@v4.15.1 
 
       - name: update infra yaml file
         run: |
+          pwd
+          ls -la
           yq e -i yq e -i '.spec.template.spec.containers[0].image="pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:${{ steps.get-version.outputs.VERSION }}"' calc-deployment.yml
 
       - name: push change
