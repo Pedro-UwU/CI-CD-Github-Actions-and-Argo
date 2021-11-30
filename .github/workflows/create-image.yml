@@ -1,0 +1,57 @@
+# file name: create-image.yml
+name: create-image
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get version
+        id: get-version
+        run: |
+          echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      
+      - name: login-docker
+        run: echo ${{ secrets.JFROG_PASSWORD }} | docker login pedrolopez030200.jfrog.io -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: create image
+        run: |
+          cd app
+          docker build -t test-app:${{ steps.get-version.outputs.VERSION }} .
+          echo 'Created Image with name:tag = test-app:${{ steps.get-version.outputs.VERSION }}'
+
+      - name: get-images-id
+        id: image-id
+        run: |
+          echo ::set-output name=IMAGE_ID::$(docker images -q test-app:${{ steps.get-version.outputs.VERSION }})
+
+      - name: upload image to registry
+        run: |
+          docker tag ${{ steps.image-id.outputs.IMAGE_ID }} pedrolopez030200.jfrog.io/pedro-repo-docker/test-app:${{ steps.get-version.outputs.VERSION }}
+          docker push pedrolopez030200.jfrog.io/pedro-repo-docker/test-app:${{ steps.get-version.outputs.VERSION }}  
+
+      - name: install yq
+        uses: mikefarah/yq@v4.15.1 
+
+      - name: update infra yaml file
+        run: |
+          yq e -i yq e -i '.spec.template.spec.containers[0].image="pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:${{ steps.get-version.outputs.VERSION }}"' calc-deployment.yml
+
+      - name: push change
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: infra/calc-deployment.yml
+          destination_repo: PedroLopezITBA/CI-CD-Github-Actions-and-Argo
+          destination_branch: master
+          destination_folder: infra
+          user_email: pelopez@itba.edu.ar
+          user_name: PedroLopezITBA
+          commit_message: update image version ${{ steps.get_version.outputs.VERSION }} in yml file
