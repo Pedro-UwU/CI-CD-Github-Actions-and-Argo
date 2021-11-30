@@ -1,9 +1,9 @@
 # file name: create-image.yml
 name: create-image
-on:
-  push:
-    tags:
-      - 'v*'
+on: [push]
+  # push:
+  #   tags:
+  #     - 'v*'
 
 jobs:
   create-and-push-image:
