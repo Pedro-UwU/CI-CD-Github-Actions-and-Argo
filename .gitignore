@@ -1,1 +1,13 @@
 infra/calc-secret.yml
+# dependencies
+app/node_modules
+
+# testing
+app/coverage
+
+# production
+app/build
+
+# misc
+.DS_Store
+app/npm-debug.log
