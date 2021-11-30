@@ -39,7 +39,7 @@ After that open a web browser and go to your ArgoCD server IP or URL In my case 
 Type 'admin' for the username and paste the password to log in.  
 And that's it! ArgoCD is successfully installed in our kubernetes cluster!
 
-## Create an infrastructure and the application
+## Create the infrastructure and the application
 
 Next, we'll be using the [React Calcultor](https://github.com/ahfarmer/calculator) from ahfarmer.
 The project is located in the 'app' directory of this repository.
@@ -154,3 +154,4 @@ kubectl -n calculator port-forward service/calculator-service 30000:3001
 
 If we open 'http://localhost:30000' we should see a calculator!
 
+![screenshot](https://github.com/PedroLopezITBA/CI-CD-Github-Actions-and-Argo/blob/main/images/calculator.png?raw=true)
