@@ -20,4 +20,4 @@ spec:
         ports:
         - containerPort: 3000
       imagePullSecrets:
-      - name: calculator-secret
+      - name: regcred
