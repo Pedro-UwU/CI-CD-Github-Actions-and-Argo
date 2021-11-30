@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: calculator
+  name: calculator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calculator
+  template:
+    metadata:
+      labels:
+        app: calculator
+    spec:
+      containers:
+      - image: pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:v1.0.3
+        name: calculator-container
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+      - name: calculator-secret
