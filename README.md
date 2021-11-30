@@ -29,20 +29,20 @@ In **another** terminal, run:
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-Next I'll need the admin accout password. To get it, simply run and copy
+Next, I'll need the admin account password. To get it, simply run and copy
 
 ```console
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 ```
 
-After that open a web browser and got to your ArgoCD server IP or URL In my case is 'https://localhost:8080/'.
-Type 'admin' for the username and paste the password to login.  
+After that open a web browser and go to your ArgoCD server IP or URL In my case is 'https://localhost:8080/'.
+Type 'admin' for the username and paste the password to log in.  
 And that's it! ArgoCD is successfully installed in our kubernetes cluster!
 
 ## Create an infrastructure and the application
 
 Next, we'll be using the [React Calcultor](https://github.com/ahfarmer/calculator) from ahfarmer.
-The projecct is located in the 'app' directory of this repository.
+The project is located in the 'app' directory of this repository.
 
 ### Write IaC
 
@@ -102,7 +102,7 @@ Here we are creating a Cluster-IP service that targets the port 3000 of our pods
 We need the credentials of our private registry to get the docker image. We can store them in a secret object, but we are working with GitOps. That means that we will expose our secrets in our repository, and that's a security flaw. This is a very discussed problem every time someone brings up GitOps and some solutions have been proposed.  
 Luckily we can use a very simple solution. We will create and inject our secret into the 'calculator' namespace via kubectl. ArgoCD won't delete and our k8s resources will be able to use it. This is not an elegant nor scalable solution, but it will work for our purposes.
 
-First we need to create a namespace for our app and our secret:
+First, we need to create a namespace for our app and our secret:
 
 ```console
 kubectl create namespace calculator
@@ -114,7 +114,7 @@ To do this we have to type the following command:
 kubectl -n calculator create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword>
 ```
 
-Replacing "\<your-registry-server\>" with the IRL of your registry server , "\<your-name>\>" with your docker username and "\<your-pword\>" with your docker password.
+Replacing "\<your-registry-server\>" with the address of your registry server, "\<your-name>\>" with your docker username, and "\<your-pword\>" with your docker password.
 
 To check if the secret has been created, we can run the following command:
 
@@ -132,11 +132,11 @@ Go to the ArgoCD UI and click the 'New App' button.
 - Select the 'dafult' project
 - Check 'AUTO-CREATE NAMESPACE'
 - Copy and paste the URL of the repository with our IaC. I'll use this repository URL.
-- Write the path of the yml files in the 'Path' text box. In this case is './infra'
+- Write the path of the yml files in the 'Path' text box. In this case, is './infra'
 - For 'Cluster URL' select the local cluster ('https://kubernetes.default.svc')
-- Choose a namespace. I'll use 'calculator'.  It must be the same namespace of our secret
+- Choose a namespace. I'll use 'calculator'.  It must be the same namespace as our secret
 
-After that, click on 'CREATE' and wait the for the app to be created. We will see something like this:
+After that, click on 'CREATE' and wait for the app to be created. We will see something like this:
 
 ![screenshot](https://github.com/PedroLopezITBA/CI-CD-Github-Actions-and-Argo/blob/main/images/app_created.png?raw=true)
 
@@ -146,7 +146,7 @@ If all went well, we should be able to see this:
 
 ![screenshot](https://github.com/PedroLopezITBA/CI-CD-Github-Actions-and-Argo/blob/main/images/app_sync.png?raw=true)
 
-And we are done! To check the app, we need to expose the calculator-service. You can do this in many different ways, depending if you are testing the app in your local machine or hosting it in a kubernetes cluster in the cloud. I'll use port-forwarding.
+And we are done! To check the app, we need to expose the calculator-service. You can do this in many different ways, depending on if you are testing the app in your local machine or hosting it in a kubernetes cluster in the cloud. I'll use port-forwarding.
 
 ```console
 kubectl -n calculator port-forward service/calculator-service 30000:3001
