@@ -22,6 +22,7 @@ jobs:
 
       - name: create image
         run: |
+          pwd
           cd app
           docker build -t test-app:${{ steps.get-version.outputs.VERSION }} .
           echo 'Created Image with name:tag = test-app:${{ steps.get-version.outputs.VERSION }}'
