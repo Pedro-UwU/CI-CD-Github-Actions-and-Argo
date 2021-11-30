@@ -142,7 +142,7 @@ After that, click on 'CREATE' and wait for the app to be created. We will see so
 
 Which is great! It means that ArgoCD found our repository and all went smoothly.  
 Now the moment of truth, click 'SYNC' and then synchronize the app.
-If all went well, we should be able to see this:
+If all goes well, we should be able to see this:
 
 ![screenshot](https://github.com/PedroLopezITBA/CI-CD-Github-Actions-and-Argo/blob/main/images/app_sync.png?raw=true)
 
