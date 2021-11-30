@@ -45,7 +45,7 @@ jobs:
         run: |
           ls -la
           cd infra
-          yq e -i yq e -i '.spec.template.spec.containers[0].image="pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:${{ steps.get-version.outputs.VERSION }}"' calc-deployment.yml
+          yq e -i '.spec.template.spec.containers[0].image="pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:${{ steps.get-version.outputs.VERSION }}"' calc-deployment.yml
           cat calc-deployment.yml
 
       # - name: push change
