@@ -52,7 +52,7 @@ jobs:
         with:
           source_file: infra/calc-deployment.yml
           destination_repo: PedroLopezITBA/CI-CD-Github-Actions-and-Argo
-          destination_branch: master
+          destination_branch: main
           destination_folder: infra
           user_email: pelopez@itba.edu.ar
           user_name: PedroLopezITBA
