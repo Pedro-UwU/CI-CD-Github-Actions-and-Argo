@@ -15,9 +15,9 @@ spec:
         app: calculator
     spec:
       containers:
-      - image: pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:v1.0.3
-        name: calculator-container
-        ports:
-        - containerPort: 3000
+        - image: pedrolopez030200.jfrog.io/pedro-repo-docker-local/test-app:v1.0.5
+          name: calculator-container
+          ports:
+            - containerPort: 3000
       imagePullSecrets:
-      - name: regcred
+        - name: regcred
