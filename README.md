@@ -169,7 +169,7 @@ To learn more about Github Actions check the [Official Documentation](https://do
 
 ### Design our workflow
 
-First, we need to think about what we want GHA when we need to deploy a new version of our project.  
+First, we need to think about what we want GHA to do when we need to deploy a new version of our project.  
 Based on what we've mentioned before, a good starting point is:
 
 - Checkout our repo (Because GitHub Actions runs on cloud servers that are created when the job needs to be executed)
@@ -178,7 +178,7 @@ Based on what we've mentioned before, a good starting point is:
 - Update the 'calc-deploy.yml' file to have the new image tag
 - Commit and push this tag change
 
-This looks pretty nice, but there's another thing we have to decide, when will we trigger this workflow? We may think it's a good idea to trigger ir every time we push something to the master branch, and maybe it is, but to avoid creating a ton of versions of our image, we can trigger the action every time we create a new tag, this way we can make a lot of updates/changes to our project and create a tag when we decide it's time to release a new version.
+This looks pretty nice, but there's another thing we have to decide, when will we trigger this workflow? We may think it's a good idea to trigger it every time we push something to the master branch, and maybe it is, but to avoid creating a ton of versions of our image, we can trigger the action every time we create a new tag, this way we can make a lot of updates/changes to our project and create a tag when we decide it's time to release a new version.
 
 ### Create the workflow
 
